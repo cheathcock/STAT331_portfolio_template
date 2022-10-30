@@ -1,0 +1,9 @@
+---
+title: "Practice Activity 4"
+format: html
+editor: visual
+---
+
+```{r}
+
+```
