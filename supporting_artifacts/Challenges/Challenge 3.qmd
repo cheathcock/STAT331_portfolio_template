@@ -1,0 +1,53 @@
+---
+title: "Chellenge 3"
+format: html
+editor: visual
+---
+
+```{r}
+#| echo: False 
+#| output: False
+# loading in the tidyverse library
+library(tidyverse)
+library(here)
+library(ggplot2)
+library(ggridges)
+hip_hop <- read_csv(here::here("datasets", "hiphop.csv"))
+```
+
+### Published Comparisons
+
+```{r}
+# new dataset
+hip_hop_genre <- hip_hop |> 
+  mutate(ethnic_class = if_else(ethnic != "white", "non-white", "white")) |> 
+  select(c(subj : ethnic_class))
+```
+
+#### Male vs Female
+
+```{r}
+hip_hop_genre |> 
+  group_by(sex) |>
+  summarize(across(intl:hiphop, mean, na.rm = TRUE)) |> 
+  summarize(across(intl:hiphop, diff, na.rm = TRUE))
+```
+
+Between the male and female participants in this study, the genre that has the biggest differentiation is the rock genre. In this genre, the female participants listened to an average of 1.93 rock artists, while males listened to 3.06 on average, which makes the largest differentiation of 1.13.
+
+#### White vs Non-white
+
+```{r}
+hip_hop_genre |> 
+  group_by(ethnic_class) |>
+  summarize(across(intl:hiphop, mean, na.rm = TRUE)) |> 
+  summarize(across(intl:hiphop, diff, na.rm = TRUE))
+```
+
+Between the white and non-white participants in this study, the biggest differentiation is also in the rock genre. In this genre, the white participants listened to an average of 2.57 rock artists, while non-white people listened to 1.06 on average, which formed a difference of 1.51.
+
+### Study Design Critique
+
+The first concern I had about this study is the overwhelming amount of white people in the study. For a study trying to differentiate between the social context of many genres between different populations of people, they definitely had a whole lot of participants that were one race.
+
+The next critique I have of this study was the way they recruited people to be participants in the study. The researcher chose students studying linguistics, sociology, and music. Considering all of these majors have a lot to do with the content of the study, they may be a bit biased.
