@@ -1,6 +1,9 @@
 ---
 title: "Lab 4"
-format: html
+author: Camille Heathcock
+format: 
+  html:
+    self-contained: true
 editor: visual
 ---
 

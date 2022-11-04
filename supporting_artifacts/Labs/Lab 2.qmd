@@ -1,7 +1,9 @@
 ---
 title: "Lab 2"
 author: Camille Heathcock
-format: html
+format: 
+  html:
+    self-contained: true
 editor: visual
 ---
 

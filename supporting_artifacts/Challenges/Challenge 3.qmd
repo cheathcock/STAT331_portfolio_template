@@ -1,6 +1,9 @@
 ---
 title: "Chellenge 3"
-format: html
+author: Camille Heathcock
+format: 
+  html:
+    self-contained: true
 editor: visual
 ---
 

@@ -1,0 +1,45 @@
+---
+title: "Practice Activity 5"
+author: Cmaille Heathcock
+format: 
+  html:
+    self-contained: true
+editor: visual
+---
+
+```{r}
+#| echo: False 
+#| output: False
+# loading in the tidyverse library
+library(tidyverse)
+library(lubridate)
+zodiac_killer <- read_csv(here::here("datasets", "suspect_times.csv"))
+```
+
+```{r}
+#Thanksgiving 
+thanksgiving <- make_date(2018, 11, 22)
+thanksgiving <- force_tz(thanksgiving, tz = "America/Los_Angeles")
+```
+
+## Zodiac Killer
+
+```{r}
+zodiac_killer <- zodiac_killer |> 
+  mutate(Time.Spotted = ymd_hms(Time.Spotted, tz = "America/Los_Angeles"))
+```
+
+1\) Based on the sunburn patterns on the body, the murder was not committed in the morning
+
+```{r}
+zodiac_killer <- zodiac_killer |> 
+  filter(am(Time.Spotted) == FALSE, 
+         wday(Time.Spotted, label = TRUE) != "Tuesday", 
+         wday(Time.Spotted, label = TRUE) != "Thursday", 
+         Time.Spotted == thanksgiving + days(35), 
+         Time.Spotted == thanksgiving - days(35)) |> 
+  mutate(Time.Spotted = with_tz(Time.Spotted, tzone = "GMT")) |> 
+  filter(pm(Time.Spotted) == TRUE, 
+         day(Time.Spotted) >= 22, 
+         day(Time.Spotted) < 24)
+```
