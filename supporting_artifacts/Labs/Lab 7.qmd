@@ -1,0 +1,145 @@
+---
+title: "Lab 7"
+author: Camille Heathcock
+format: 
+  html:
+    self-contained: true
+editor: visual
+---
+
+## 1. The Data
+
+```{r}
+#| echo: False 
+#| output: False
+library(tidyverse)
+black_foot_fish <- read_csv(here::here("datasets", "BlackfootFish.csv"))
+```
+
+## **2 Part One: Summaries and Plots (Midterm Review)**
+
+### **Task 1 -- Summarizing Missing Data**
+
+-   How many observations have missing values?
+
+    There are 1796 variables with missing values.
+
+-   What variable(s) have missing values present?
+
+    The only variables with missing values present is the weight column.
+
+```{r}
+missing_values <- black_foot_fish |> 
+  summarize(na_sum = across(.cols = everything(), .fns = ~ sum(is.na(.))))
+
+map_int(black_foot_fish, ~sum(is.na(.)))
+```
+
+### **Task 2 -- Visualizing Missing Data**
+
+```{r}
+black_foot_fish |> 
+  group_by(trip, year, section) |>  
+  mutate(missing = sum(is.na(weight))) |>
+  ggplot(mapping = aes(x = year, 
+                       y = missing,
+                       fill = section)) + 
+  geom_col() + 
+  facet_wrap(~ trip) +
+  labs(x = "Year", 
+       y = "", 
+       title = "Missing Fish Weights for Trip 1 and Trip 2 (1989-1991)", 
+       subtitle = "By Section of Blackfoot River", 
+       fill = "Section of Blackfoot River")
+```
+
+## **3 Part Two: Adjusting the Data (Function Writing)**
+
+```{r}
+#| echo: False 
+#| output: False
+BlackfootFish <- black_foot_fish |> 
+  mutate(length = (length - min(length, na.rm = TRUE)) / 
+           (max(length, na.rm = TRUE) - min(length)), 
+         weight = (weight - min(weight, na.rm = TRUE)) / 
+           (max(weight, na.rm = TRUE) - min(length, na.rm = TRUE))
+         )
+```
+
+### **Task 1 -- Writing a Function**
+
+```{r}
+rescale_01 <- function(vec) {
+  mymin <- min(vec, na.rm = TRUE)
+  mymax <- max(vec, na.rm = TRUE)
+  rescaled <- (vec - mymin) / (mymax - mymin)
+  return(rescaled)
+}
+```
+
+### **Task 2 -- Adding Stops**
+
+```{r}
+rescale_02 <- function(vec) {
+  
+  stopifnot(is.numeric(vec),
+            length(vec) > 1)
+  mymin <- min(vec, na.rm = TRUE)
+  mymax <- max(vec, na.rm = TRUE)
+  rescaled <- (vec - mymin) / (mymax - mymin)
+  return(rescaled)
+}
+```
+
+### **Task 3 - Performing a Simple Test**
+
+```{r}
+x <- c(1:25, NA)
+rescale_02(x)
+```
+
+### **Task 4 - Performing a More Difficult Test**
+
+```{r}
+#| output: False
+rescale_02(black_foot_fish$length)
+
+black_foot_fish_new <- black_foot_fish |> 
+  mutate(rescaled_length = rescale_02(length))
+```
+
+plots
+
+```{r}
+#| layout-nrow: 1
+black_foot_fish |> 
+  ggplot(mapping = aes(x = length)) +
+    geom_histogram(bins = 50, fill = "purple") +
+    labs(x = "Original Length")
+
+black_foot_fish_new |> 
+  ggplot(mapping = aes(x = rescaled_length)) +
+    geom_histogram(bins = 50, fill = "purple") +
+    labs(x = "Rescaled Length")
+```
+
+### **Task 5 -- Incorporating Variables**
+
+```{r}
+rescale_column <- function(df, vars) {
+  stopifnot(is.data.frame(df))
+  df |> 
+    mutate(
+      across(
+        .cols = {{ vars }}, 
+        .fns = rescale_02
+      )
+    )
+  }
+```
+
+### **Task 6 -- Another Function Test**
+
+```{r}
+rescale_column(black_foot_fish, length:weight)
+```
