@@ -17,7 +17,8 @@ library(tidyverse)
 ```
 
 ```{r}
-military <- read_xlsx(here::here("datasets", 
+military <- read_xlsx(here::here("supporting_artifacts",
+                                 "datasets", 
                                  "gov_spending_per_capita.xlsx"), 
                       sheet = "Share of Govt. spending", 
                       skip = 6, 

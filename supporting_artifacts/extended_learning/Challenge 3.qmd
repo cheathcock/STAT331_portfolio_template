@@ -1,9 +1,14 @@
 ---
 title: "Chellenge 3"
 author: Camille Heathcock
+execute: 
+  echo: true
+  error: false 
 format: 
-  html:
+  html: 
+    code-fold: true
     self-contained: true
+    theme: cosmo
 editor: visual
 ---
 

@@ -13,7 +13,7 @@ editor: visual
 # loading in the tidyverse library
 library(tidyverse)
 library(lubridate)
-zodiac_killer <- read_csv(here::here("datasets", "suspect_times.csv"))
+zodiac_killer <- read_csv(here::here("supporting_artifacts", "datasets", "suspect_times.csv"))
 ```
 
 ```{r}

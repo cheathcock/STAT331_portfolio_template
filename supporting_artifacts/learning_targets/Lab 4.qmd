@@ -1,9 +1,14 @@
 ---
 title: "Lab 4"
 author: Camille Heathcock
+execute: 
+  echo: true
+  error: false 
 format: 
-  html:
+  html: 
+    code-fold: true
     self-contained: true
+    theme: cosmo
 editor: visual
 ---
 
@@ -11,7 +16,7 @@ editor: visual
 #| echo: False 
 #| output: False
 library(tidyverse)
-avocado_data <- read_csv(here::here("datasets", "avocado.csv"))
+avocado_data <- read_csv(here::here("supporting_artifacts", "datasets", "avocado.csv"))
 ```
 
 ## Set-up

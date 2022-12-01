@@ -1,9 +1,14 @@
 ---
 title: "Lab 2"
 author: Camille Heathcock
+execute: 
+  echo: true
+  error: false 
 format: 
-  html:
+  html: 
+    code-fold: true
     self-contained: true
+    theme: cosmo
 editor: visual
 ---
 
@@ -24,6 +29,8 @@ You are permitted and encouraged to work with your teammates as you complete the
 In the code chunk below load in the packages necessary for your analysis. You should only need the tidyverse and here packages for this analysis, unless you decide to use additional resources.
 
 ```{r setup}
+#| echo: False 
+#| output: False
 library(tidyverse)
 library(here)
 ```
@@ -59,7 +66,7 @@ For this lab we will use the **`readr`** package (from the `tidyverse`) to read 
 **1. Using the `read_csv()` function and the here** package, to write the code necessary to load in the `surveys.csv` dataset. For simplicity, name the dataset `surveys`.
 
 ```{r data}
-surveys <- read_csv(here::here("datasets", "surveys.csv"))
+surveys <- read_csv(here::here("supporting_artifacts", "datasets", "surveys.csv"))
 
 #2) 
 dim(surveys)

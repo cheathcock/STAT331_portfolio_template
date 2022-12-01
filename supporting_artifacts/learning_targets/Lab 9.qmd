@@ -1,0 +1,184 @@
+---
+title: "Lab 9"
+author: Camille Heathcock
+execute: 
+  echo: true
+  error: true
+format: 
+  html: 
+    code-fold: true
+    self-contained: true
+    theme: cosmo
+editor: visual
+---
+
+## **Baby Names**
+
+## **2) Is my name not cool any more?**
+
+```{r}
+#| echo: False 
+#| output: False
+library(tidyverse)
+a_names <- read.csv(here::here("supporting_artifacts", "datasets", "StateNames_A.csv"))
+```
+
+## **3) Summarizing & Visualizing the Number of Allisons**
+
+The dataset has a column titled Gender, which contains two values "F" and "M", representing "Female" and "Male". The sex someone was assigned at birth is different from their gender identity (definitions). Thus, this variable should be renamed to Sex or Sex at Birth.
+
+```{r}
+#| message: False
+a_names <- a_names |> 
+  mutate("Sex at Birth" = Gender) |> 
+  select(Name, Year, `Sex at Birth`, State, Count)
+```
+
+1.  Make a summary table of the number of babies named "Allison" for each state and the sex of the baby. Specifically, each state should be its own row and each sex should have its own column. Additionally, if there were no babies born with the name "Allison" for that combination of year, state, & sex the table should have a value of 0 (not an `NA`).
+
+```{r}
+#original code 
+#sum_table_a <- a_names |> 
+  #pivot_wider(names_from = `Sex at Birth`, values_from = Count) |> 
+  #filter(Name == "Allison") |> 
+  #group_by(State) |> 
+  #summarize(across(.cols = c("F", "M"), .fns = sum)) |> 
+  #mutate(across(.cols = c("F", "M"), ~replace_na(., 0))) 
+
+#sum_table_a
+```
+
+```{r}
+#revised code 
+sum_table_a <- a_names |> 
+  filter(Name == "Allison") |> 
+  group_by(State, `Sex at Birth`) |> 
+  summarize("count_sum" = sum(Count), .groups = "keep") |> 
+  pivot_wider(names_from = `Sex at Birth`, values_from = count_sum) |> 
+  mutate(across(.cols = c("F", "M"), ~replace_na(., 0)))
+
+sum_table_a
+```
+
+2.  You should have seen in the table above that "Allison" is a name given overwhelmingly to babies assigned female at birth. So, `filter` the data to include only babies assigned `F`emale at birth.
+
+```{r}
+allisons_female <- a_names |> 
+  filter(Name == "Allison", 
+         `Sex at Birth` == "F") |> 
+  group_by(State) |> 
+  summarize("Female Allisons" = sum(Count))
+
+allisons_female
+```
+
+3.  Make a visualization showing how the popularity of the name "Allison" has changed over the years.
+
+```{r}
+a_names |> 
+  filter(Name == "Allison", 
+         `Sex at Birth` == "F") |> 
+  ggplot(mapping = aes(x = Year, y = Count)) + 
+  geom_col(fill = "purple") + 
+  labs(x = "", 
+       y = "", 
+       title = "Count of Females named Allison (1997-2014)")
+```
+
+## **4) Modeling the Number of Allisons**
+
+4.  Create a linear model with the year as the explanatory variable, and the number of Allisons as the response.
+
+```{r}
+#allisons_count <- a_names %>%
+  #filter(Name == "Allison") %>%
+  #lm(Count ~ Year, data = .) 
+
+#summary(allisons_count)
+```
+
+```{r}
+#revised code 
+allisons_count <- a_names %>%
+  filter(Name == "Allison",
+         `Sex at Birth` == "F") %>%
+  group_by(Year) %>%
+  summarize(counts = sum(Count), .groups = "keep") %>%
+  lm(counts ~ Year, data = .) 
+
+summary(allisons_count)
+```
+
+5.  Visualize the regression model.
+
+```{r}
+allisons_count |> 
+  ggplot(mapping = aes(x = Year, y = counts)) + 
+  geom_point() + 
+  geom_line() +
+  labs(x = "", 
+       y = "", 
+       title = "Count of Females named Allison (1997-2014)")
+```
+
+6.  Write out the estimated regression equation.
+
+    Number of Allisons = 209689.76 - 101.52 \* Year
+
+7.  Plot the *residuals* of the model, that is, the actual values minus the predicted values. Comment on the residuals - do you see any patterns?
+
+```{r}
+allisons_count |> 
+  broom::augment() |> 
+  ggplot(mapping = aes(y = .resid, x = .fitted)) +
+  geom_point() + 
+  geom_line()
+```
+
+The residuals show a pattern in the plot. They get increasingly more dispersed as the model moves away from zero. This indicates that this may not be the most ideal model for the data.
+
+8.  What do you conclude from this model?
+
+We can conclude that this model may not be the best representation of the data, because the residual graphs shows a slight pattern. A similar model with perhaps more explanatory variables might be e better fit of the data.
+
+## **5) Spelling by State**
+
+1.  Narrow the A name dataset (downloaded previously) down to only male-assigned babies named "Allan", "Alan", or "Allen". Make a plot comparing the popularity of these names over time.
+
+```{r}
+allen_data <- a_names |> 
+  filter(Name == "Allan" | Name == "Alan" | Name =="Allen")
+```
+
+```{r}
+allen_data |> 
+  ggplot(mapping = aes(x = Name, y = Count, fill = Name)) + 
+  geom_col() + 
+  theme(legend.position = "none") +
+  labs(x = "", 
+       y = "", 
+       title = "Counts of Allen, Alan, and Allan (1997-2014)")
+```
+
+2.  In California, Allan's spelling of his name is the least common of the three, but perhaps it's not such an unusual name for his home state of Pennsylvania. Compute the total number of babies born with each spelling of "Allan" in 2000, in Pennsylvania and in California. Specifically, each spelling should be its own column and each state should have its own row. Similar to before, a `0` (not an `NA`) should be used to represent locations where there were no instances of these names.
+
+```{r}
+allen_names <- allen_data |> 
+  pivot_wider(names_from = Name, values_from = Count) |> 
+  filter(Year == 2000, `Sex at Birth` == "M", State == "CA" | State == "PA") |> 
+  mutate(across(.cols = Allen:Allan, ~replace_na(., 0)))
+
+allen_names
+```
+
+3.  Convert your total counts to overall percents. That is, what was the percent breakdown between the three spellings in CA? What about in PA?
+
+```{r}
+allen_data |> 
+  pivot_wider(names_from = Name, values_from = Count) |> 
+  mutate(across(.cols = Allen:Allan, ~replace_na(., 0))) |> 
+  filter(Year == 2000, `Sex at Birth` == "M", State == "CA" | State == "PA") |> 
+  mutate(Allen = round(Allen/ sum(across(Allen:Allan)), 2),
+         Alan = round(Alan/ sum(across(Allen:Allan)), 2), 
+         Allan = round(Allan/ sum(across(Allen:Allan)), 2))
+```

@@ -1,9 +1,14 @@
 ---
 title: "Lab 7"
 author: Camille Heathcock
+execute: 
+  echo: true
+  error: false 
 format: 
-  html:
+  html: 
+    code-fold: true
     self-contained: true
+    theme: cosmo
 editor: visual
 ---
 
@@ -13,7 +18,7 @@ editor: visual
 #| echo: False 
 #| output: False
 library(tidyverse)
-black_foot_fish <- read_csv(here::here("datasets", "BlackfootFish.csv"))
+black_foot_fish <- read_csv(here::here("supporting_artifacts", "datasets", "BlackfootFish.csv"))
 ```
 
 ## **2 Part One: Summaries and Plots (Midterm Review)**

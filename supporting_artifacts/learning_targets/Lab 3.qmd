@@ -1,9 +1,14 @@
 ---
 title: "Lab 3"
 author: Camille Heathcock
+execute: 
+  echo: true
+  error: false 
 format: 
-  html:
+  html: 
+    code-fold: true
     self-contained: true
+    theme: cosmo
 editor: visual
 ---
 
@@ -13,7 +18,7 @@ editor: visual
 # loading in the tidyverse library
 library(tidyverse)
 # loading in the dataset
-hip_hop <- read_csv(here::here("datasets", "hiphop.csv"))
+hip_hop <- read_csv(here::here("supporting_artifacts", "datasets", "hiphop.csv"))
 ```
 
 ## Data set description

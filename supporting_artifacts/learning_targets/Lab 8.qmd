@@ -1,0 +1,122 @@
+---
+title: "Lab 8"
+author: Camille Heathcock
+execute: 
+  echo: true
+  error: true
+format: 
+  html: 
+    code-fold: true
+    self-contained: true
+    theme: cosmo
+editor: visual
+---
+
+# **The 12 Days of Christmas**
+
+## 1 Singing the Song
+
+```{r packages}
+#| echo: False 
+#| output: False
+library(dplyr)
+library(glue)
+library(stringr)
+library(purrr)
+
+xmas <- read.csv("https://www.dropbox.com/s/e584pryn8evm1gz/xmas.csv?dl=1")
+```
+
+```{r}
+pluralize_gift <- function(gift){
+
+gift <- case_when(str_detect(gift, "oo") ~ str_replace(gift, "oo", "ee"),
+                  str_detect(gift, "y$") ~ str_replace(gift, "y", "ies"), 
+                  TRUE ~ str_c(gift, "s"))
+
+return(gift)
+
+}
+```
+
+```{r phrase-function}
+make_phrase <- function(num_word, item, verb, adjective, location) {
+  
+  verb <- str_replace_na(verb, " ")
+  adjective <- str_replace_na(adjective, " ")
+  location <- str_replace_na(location, " ")
+
+  item <- ifelse(num_word != "one", pluralize_gift(item), item) 
+    
+  if(num_word == "one") {
+    num_word <- ifelse(str_starts(item, pattern = "^[aeiou]"), "an", "a")
+  }
+  
+    glued_song <- glue::glue("{num_word} {adjective} {item} {verb} {location}")
+    return(str_squish(glued_song))
+}
+```
+
+```{r}
+xmas2 <- xmas %>%
+  mutate(day.num = as.character(english::english(Day)
+                                ), 
+    Full.Phrase = pmap_chr(
+      list(num_word = day.num,
+           item = Gift.Item,
+           verb = Verb,
+           adjective = Adjective,
+           location = Location),
+      make_phrase
+      )
+  )
+```
+
+### 1.1 Step Three: Iteration.
+
+```{r}
+sing_line <- function(dataset, line, phrase_col){
+  
+  num_word <- english::ordinal(line)
+  intro <- glue::glue("On the {num_word} day of Christmas, my true love gave to me:")
+
+  phrases <- dataset |>
+    pull( {{phrase_col}} )
+    
+  together_now <- glue::glue_collapse(phrases[line:1], sep = ",\n", last = ", and \n")
+  return(glue::glue("{intro}\n{together_now}."))
+
+}
+```
+
+### Tests
+
+```{r}
+#tests 
+xmas2 |>
+sing_line(line = 4, phrase_col = Full.Phrase)
+
+
+map_chr(1:12, ~ sing_line(xmas2, .x, Full.Phrase)) |>
+  str_c(collapse = "\n") |>
+  cat()
+```
+
+### 1.2 Step Four: Use Your Functions!
+
+```{r}
+xmas2 <- xmas |>
+  mutate(
+    day.num = as.character(english::english(Day)), 
+    Full.Phrase = pmap_chr(.l = list(num_word = day.num, 
+                                     item = Gift.Item, 
+                                     verb = Verb, 
+                                     adjective = Adjective, 
+                                     location = Location), 
+                           .f = make_phrase)
+  )
+
+map_chr(1:12, ~sing_line(xmas2, .x, Full.Phrase)) |>
+  str_c(collapse = "\n") |>
+  cat()
+```

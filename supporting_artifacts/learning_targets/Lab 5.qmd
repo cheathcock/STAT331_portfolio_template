@@ -1,9 +1,14 @@
 ---
 title: "Lab 5"
 author: Camille Heathcock
+execute: 
+  echo: true
+  error: false 
 format: 
-  html:
+  html: 
+    code-fold: true
     self-contained: true
+    theme: cosmo
 editor: visual
 ---
 
@@ -12,7 +17,7 @@ editor: visual
 #| output: False
 library(tidyverse)
 library(here)
-surveys <- read_csv(here::here("datasets", "surveys.csv"))
+surveys <- read_csv(here::here("supporting_artifacts", "datasets", "surveys.csv"))
 ```
 
 **1. Reorder the box plots so the weights go in descending order**
