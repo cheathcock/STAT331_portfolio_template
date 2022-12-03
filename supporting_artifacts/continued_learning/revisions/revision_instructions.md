@@ -9,10 +9,10 @@ boldface, italics, colored text) before your revisions.
 
 **You do not need to use the coord_flip() function to flip the coordinates of your plot. There is a much simpler way. Can you find it?**
 
-Once again, I was not referring to a proper resource when trying to figure out the options for my YAML. I was looking at an R Markdown textbook rather than a quarto document resource. After going to office hours and discussing this mishap, I changed my YAML to ensure code folding throughout the entirety of the quarto document. Before, it had simply not code folded any of my html because it was not in the proper format. I had to change the wording of my YAML output since I originally got information from the r-markdown YAML specifications. 
-Again, I referred to an R markdown resource rather than a quarto resource when trying to place my plots next to each other. Before, I just had 2 lines of code: "#| fig-show: hold / #| out-width: 50%", which placed the plots on top of one another, but after finding the correct specification in the Quarto document online resource, I added the "layout-ncol: 2" below those two lines to make the plots actually next to each other.
-When orignally completing this assingment, I was not referring to a proper resource when trying to figure out the options for my YAML. I was looking at an R Markdown textbook rather than a quarto document resource. After going to office hours and discussing this mishap, I changed my YAML to ensure code folding throughout the entirety of the quarto document. Before, it had simply not code folded any of my html because it was not in the proper format. I had to change the wording of my YAML output since I originally got information from the r-markdown YAML specifications. Again, I referred to an R markdown resource rather than a quarto resource when trying to place my plots next to each other. Before, I just had 2 lines of code: "#| fig-show: hold / #| out-width: 50%", which placed the plots on top of one another, but after finding the correct specification in the Quarto document online resource, I added the "layout-ncol: 2" below those two lines to make the plots actually next to each other.
-I learned that I should refer to a Quarto document resource rather than an R markdown resource when doing labs and challenges! I also learned that I need to get better at writing these reflections.
+The first revision I made was to change my YAML to ensure code folding throughout the entirety of the quarto document. Before, it had simply not code folded any of my html because it was not in the proper format. I had to change the wording of my YAML output since I originally got information from the r-markdown YAML specifications. 
+The next revision I made was aligning the two graphs next to one another. Before, I just had 2 lines of code: "#| fig-show: hold / #| out-width: 50%", which placed the plots on top of one another, but after finding the correct specification in the Quarto document online resource, I added the "layout-ncol: 2" below those two lines to make the plots actually next to each other.
+
+I learned that I should refer to a Quarto document resource rather than an R markdown resource when doing labs and challenges! 
 
 ### Lab 3
 **Careful! A professional looking report should not display messages about reading in the data or loading in package. These messages are not useful for the reader and make your document look cluttered.**
@@ -24,9 +24,11 @@ I learned that I should refer to a Quarto document resource rather than an R mar
 **Consider the nature of the data when plotting. Is every participant on one row? If not, what should you do with the data before plotting it? The familiarity variable doesn’t speak to demographics of the participants.**
 
 The first revision I made was regarding showing my document output in my final rendered document. Originally, I had all the information associated with loading in the dataset and tidyverse packages included the document output. I thought since I included the echo: False option, the code would not be included in the output. However, after some deeper digging I discovered that specification actually just hides the code, not the output of the code. So, I included an output: False option after figuring out that is the way to actually hide output, which I found in the quarto.org online resource. I learned the difference between the echo: and output: commands and each of their different applications. 
-As for questions 1 and 2, I originally did not include a robust enough description for the datasets. This is probably because I just skimmed the document with the original description when we were working on the lab in class, and so I did not thin about how it would be appropriate to talk about the number of participants, where the sample came from, how many words there were per participant, etc. I have now included all of this information after a thorough read-through of the data set description. 
-I am not sure what to do for number 8. I'm going to office hours on Tuesday to get help with this and also lab 4.
-I already submitted my revisions for questions 1 and 2. In this submission I have made changes to the revision requested on number 8. At first, I was creating plots based on the familiarity, ethnic class, and sex variables. I did not take into consideration the fact that these plots would not plot each participant with relation to these variables, because each participant is represented 64 times for each word, so there were many observations in the graphs. To remedy this, I used the distinct function to pull out the distinct subj values, and assigned this to a new dataset, and then used this dataset for the plots. Through this revision process, I learned that I should be wary of the way my data is oriented before making a plot of it, and that the solution to something may be right in front of me.
+
+As for questions 1 and 2, I originally did not include a robust enough description for the datasets. This is probably because I just skimmed the document with the original description when we were working on the lab in class, and so I did not think about how it would be appropriate to talk about the number of participants, where the sample came from, how many words there were per participant, etc. I have now included all of this information after a thorough read-through of the data set description. 
+
+For number 8, at first, I was creating plots based on the familiarity, ethnic class, and sex variables. I did not take into consideration the fact that these plots would not plot each participant with relation to these variables, because each participant is represented 64 times for each word, so there were many observations in the graphs. To remedy this, I used the distinct function to pull out the distinct subj values, and assigned this to a new dataset, and then used this dataset for the plots. 
+Through this revision process, I learned that I should be wary of the way my data is oriented before making a plot of it, and that the solution to something may be right in front of me.
 
 ### Lab 4
 **Where are the sections in your report delineating each question? You have revisions on the formatting of your report.**
@@ -49,7 +51,7 @@ The first revision I implemented was adding the numbers for each section delinea
 
 2) Cleaning the data:
 
-When I originally cleaned the data, I forgot to include some of the large regions in my dataframes, like NorthernNewEngland and WestTexNewMexico. I have now included both of these regions in the region dataframe. I tried removing the Total US dataframe, but it just got grouped in with the metro regions later with the anti-join function. I could just drop this observation but that feels wrong. So I left the dataframe, but I will talk to you at office hours about what you were actually looking for!
+When I originally cleaned the data, I forgot to include some of the large regions in my dataframes, like NorthernNewEngland and WestTexNewMexico. I have now included both of these regions in the region dataframe. 
 
 3) Which major region sold the most organic, small Hass avocados in 2017?:
 
@@ -71,9 +73,9 @@ For the visualization in part 6, I was unsatisfied by my plot when I originally 
 
 7) Plot recreation:
 
-For number 7, my knitted html document was originally printing out the output from my summarize argument, when it should have just been outputting my pretty recreated plot. I’m honestly not sure what this output was telling me, but to remedy this issue I created another code chunk for the plot, which isolated the code pivoting the dataframe. I then hid the output for this code chunk. 
+For number 7, my knitted html document was originally printing out the output from my summarize argument, when it should have just been outputting my pretty recreated plot. To remedy this issue I created another code chunk for the plot, which isolated the code pivoting the dataframe. I then hid the output for this code chunk. 
 
-Throughout this revision process, I learned that the output from my code should be very clear and concise. I also learned that these lab steps are meant to build off of one another, so I made the whole document a bit more cohesive. I am still a little bit iffy on the whole data cleaning aspect at the beginning, but I think that is the kind of thing I will get better at with practice, depending on the dataset and the application.
+Throughout this revision process, I learned that the output from my code should be very clear and concise. I also learned that these lab steps are meant to build off of one another, so I made the whole document a bit more cohesive. 
 
 ### Lab 7
 **What is the input structure for across()? What is the first input? What is the second input? How do we indicate that our function we want across() to use is something we’re creating?**
@@ -107,6 +109,6 @@ Task 4 - Performing a More Difficult Test:
 
 I changed my original bar plots to histograms since they are better for visualizing the distribution of numerical variables. 
 
-Through this revision process, I have learned to go back and triple check my work. Once I finally finished this lab, I kind of just turned it in without looking back, and I missed a few details that would have made it much better. I also learned that I should constantly be going back and referring to past labs and assignments to implement the things I have gotten revisions on in the past. Especially for more efficient code– there were a few places where I could have been more efficient in this lab. I appreciate the feedback!
+Through this revision process, I have learned to go back and triple check my work. I also learned that I should constantly be going back and referring to past labs and assignments to implement the things I have gotten revisions on in the past, especially with being more efficient.
 
 

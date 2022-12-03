@@ -74,12 +74,12 @@ allisons_female
 
 3.  Make a visualization showing how the popularity of the name "Allison" has changed over the years.
 
-```{r}
+```{r allison-visulazation}
 a_names |> 
   filter(Name == "Allison", 
          `Sex at Birth` == "F") |> 
-  ggplot(mapping = aes(x = Year, y = Count)) + 
-  geom_col(fill = "purple") + 
+  ggplot(mapping = aes(x = Year, y = Count, fill = Year)) + 
+  geom_col(show.legend = FALSE) + 
   labs(x = "", 
        y = "", 
        title = "Count of Females named Allison (1997-2014)")
