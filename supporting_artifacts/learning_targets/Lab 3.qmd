@@ -12,7 +12,9 @@ format:
 editor: visual
 ---
 
-```{r}
+**Portfolio Revisions: I have adjusted my YAML to create a more clear document, as well as created names for all code chunks**
+
+```{r packages}
 #| echo: False 
 #| output: False
 # loading in the tidyverse library
@@ -39,14 +41,14 @@ Missing values were replaced with mean values of these variables. A benefit of d
 
 Converting Characters to Factors:
 
-```{r}
+```{r characters-to-factors}
 hip_hop_clean <- hip_hop |> 
   mutate(across(where(is.character), as.factor))
 ```
 
 #### 5)
 
-```{r}
+```{r count-distint-words}
 hip_hop_clean |> 
   distinct(word, .keep_all = TRUE) |> 
   count()
@@ -56,14 +58,14 @@ There are 64 AAE words studied in this data set.
 
 #### 6)
 
-```{r}
+```{r ethnic-class-variable}
 hip_hop_clean <- hip_hop_clean |> 
   mutate(ethnic_class = if_else(ethnic != "white", "non-white", "white"))
 ```
 
 #### 7)
 
-```{r}
+```{r participant-demogrpahics}
 hip_hop_clean |> 
   distinct(subj, .keep_all = TRUE) |> 
   select(sex, age, ethnic) |> 
@@ -74,40 +76,50 @@ In this particular study, there are 117 female participants and 51 male particip
 
 #### 8)
 
-```{r}
+**Portfolio Revisions: I have revised the format of both graphs to make them more clear to the viewer**
+
+```{r distinct-participants}
 #| echo: False
 hip_hop_distinct <- hip_hop_clean |> 
   distinct(subj, .keep_all = TRUE)
 ```
 
-```{r}
+```{r plot-1}
 hip_hop_distinct |> 
   ggplot(mapping = aes(x = familiarity,
                      y = ethnic_class,
                      fill = sex)) + 
-  geom_boxplot(alpha = 0.3) + 
-  labs(y = "Ethnicity", x = "Familiarity")
+  geom_col() + 
+  labs(y = " ",
+       x = " ", 
+       title = "Count of Familiarity of AAE Words", 
+       subtitle = "For Males and Females of White and Non-white demographics")
 ```
 
-```{r}
+```{r plot-2}
  hip_hop_distinct |> 
    ggplot(mapping = aes(x = familiarity, fill = sex)) + 
    geom_bar() + 
-   facet_wrap(~ ethnic_class)
+   facet_wrap(~ ethnic_class) +
+   labs(y = " ",
+       x = " ", 
+       title = "Count of Familiarity of AAE Words", 
+       subtitle = "For Males and Females of White and Non-white demographics")
 ```
 
 ## Familiar Words
 
 #### People below age of 20
 
-```{r}
-#most familiar
+```{r most-familiar-words-age<20}
 hip_hop_clean |> 
   filter(age < 20) |>  
   group_by(word) |> 
   summarize(mean = mean(familiarity)) |> 
   slice_max(mean)
-#least familiar
+```
+
+```{r least-familiar-words-age<20}
 hip_hop_clean |> 
   filter(age < 20) |>  
   group_by(word) |> 
@@ -119,14 +131,15 @@ The most familiar term on average for people below the age of 20 was "off the ho
 
 #### Non-white women
 
-```{r}
-#most familiar 
+```{r most-familiar-words-nonwhitewomen}
 hip_hop_clean |> 
   filter(ethnic_class == "non-white", sex == "Female") |>  
   group_by(word) |> 
   summarize(mean = mean(familiarity)) |> 
   slice_max(mean)
-#least familiar
+```
+
+```{r least-familiar-words-nonwhitewomen}
 hip_hop_clean |> 
   filter(ethnic_class == "non-white", sex == "Female") |>  
   group_by(word) |> 
@@ -138,14 +151,15 @@ The most commonly familiar term among non-white women in this study on average w
 
 #### White men above the age of 30
 
-```{r}
-#most familiar 
+```{r most-familiar-words-whitemen>30}
 hip_hop_clean |> 
   filter(ethnic_class == "white", sex == "Male", age > 30) |>  
   group_by(word) |> 
   summarize(mean = mean(familiarity)) |> 
   slice_max(mean)
-#least familiar 
+```
+
+```{r least-familiar-words-whitemen>30}
 hip_hop_clean |> 
   filter(ethnic_class == "white", sex == "Male", age > 30) |>  
   group_by(word) |> 
@@ -157,8 +171,7 @@ The most familiar term on average among the demographic of white men over 30 was
 
 ## Study Subjects
 
-```{r}
-#the hunt for JB 
+```{r hunt-for-JB}
 hip_hop_clean |>  
   distinct(subj, .keep_all = TRUE) |> 
   filter(sex == "Male", 

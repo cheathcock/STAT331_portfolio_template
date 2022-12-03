@@ -12,9 +12,11 @@ format:
 editor: visual
 ---
 
+**Portfolio Revisions: I have adjusted my YAML to create a more clear document, as well as created names for all code chunks**
+
 ## 1. The Data
 
-```{r}
+```{r packages}
 #| echo: False 
 #| output: False
 library(tidyverse)
@@ -33,7 +35,7 @@ black_foot_fish <- read_csv(here::here("supporting_artifacts", "datasets", "Blac
 
     The only variables with missing values present is the weight column.
 
-```{r}
+```{r missing-values}
 missing_values <- black_foot_fish |> 
   summarize(na_sum = across(.cols = everything(), .fns = ~ sum(is.na(.))))
 
@@ -42,7 +44,7 @@ map_int(black_foot_fish, ~sum(is.na(.)))
 
 ### **Task 2 -- Visualizing Missing Data**
 
-```{r}
+```{r missing-data-visual}
 black_foot_fish |> 
   group_by(trip, year, section) |>  
   mutate(missing = sum(is.na(weight))) |>
@@ -60,7 +62,7 @@ black_foot_fish |>
 
 ## **3 Part Two: Adjusting the Data (Function Writing)**
 
-```{r}
+```{r inefficient-example}
 #| echo: False 
 #| output: False
 BlackfootFish <- black_foot_fish |> 
@@ -73,7 +75,7 @@ BlackfootFish <- black_foot_fish |>
 
 ### **Task 1 -- Writing a Function**
 
-```{r}
+```{r rescale-function-1}
 rescale_01 <- function(vec) {
   mymin <- min(vec, na.rm = TRUE)
   mymax <- max(vec, na.rm = TRUE)
@@ -84,7 +86,7 @@ rescale_01 <- function(vec) {
 
 ### **Task 2 -- Adding Stops**
 
-```{r}
+```{r rescale-function-2}
 rescale_01 <- function(vec) {
   
   stopifnot(is.numeric(vec),
@@ -98,14 +100,14 @@ rescale_01 <- function(vec) {
 
 ### **Task 3 - Performing a Simple Test**
 
-```{r}
+```{r simple-test}
 x <- c(1:25, NA)
 rescale_01(x)
 ```
 
 ### **Task 4 - Performing a More Difficult Test**
 
-```{r}
+```{r difficult-test}
 #| output: False
 rescale_01(black_foot_fish$length)
 
@@ -113,9 +115,9 @@ black_foot_fish_new <- black_foot_fish |>
   mutate(rescaled_length = rescale_01(length))
 ```
 
-plots
+**Plots**
 
-```{r}
+```{r original-vs-rescaled-plots}
 #| layout-nrow: 1
 black_foot_fish |> 
   ggplot(mapping = aes(x = length)) +
@@ -130,7 +132,7 @@ black_foot_fish_new |>
 
 ### **Task 5 -- Incorporating Variables**
 
-```{r}
+```{r incorporating-variables}
 rescale_column <- function(df, vars) {
   stopifnot(is.data.frame(df))
   df |> 
@@ -145,6 +147,6 @@ rescale_column <- function(df, vars) {
 
 ### **Task 6 -- Another Function Test**
 
-```{r}
+```{r another-test}
 rescale_column(black_foot_fish, length:weight)
 ```

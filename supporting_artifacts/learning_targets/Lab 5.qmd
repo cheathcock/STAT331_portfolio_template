@@ -12,7 +12,9 @@ format:
 editor: visual
 ---
 
-```{r}
+**Portfolio Revisions: I have adjusted my YAML to create a more clear document, as well as created names for all code chunks**
+
+```{r packages}
 #| echo: False 
 #| output: False
 library(tidyverse)
@@ -22,7 +24,7 @@ surveys <- read_csv(here::here("supporting_artifacts", "datasets", "surveys.csv"
 
 **1. Reorder the box plots so the weights go in descending order**
 
-```{r}
+```{r boxplots-descending}
 #lab 2 plot 
 surveys |> 
   ggplot(mapping = aes(y = fct_reorder(species, 
@@ -36,7 +38,7 @@ surveys |>
 
 **2. Now that you've reordered, look at your y-axis label. That's long! Let's take Will Chase's advice and move the y-axis label to the top of the plot.**
 
-```{r}
+```{r relabelled-plot}
 surveys |> 
   ggplot(mapping = aes(y = fct_reorder(species, weight, .desc = TRUE), 
                        x = weight)) + 
@@ -50,7 +52,7 @@ surveys |>
 
 **1. Create a visualization how weights vary for each genus over the duration of the study.**
 
-```{r}
+```{r weight-genus-visual}
 surveys |> 
   ggplot(aes(x = year, 
              y = weight)) + 
@@ -63,7 +65,7 @@ surveys |>
 
 **2. Calculate and plot the mean weight for each year (for each genus).**
 
-```{r}
+```{r mean-weight-year-visual}
 #| message: False
 mean_yearly_weight <- surveys |> 
   group_by(year, genus) |> 
@@ -82,7 +84,7 @@ surveys_exp |>
 
 **3. Reorder the lines so the weights go in descending order.**
 
-```{r}
+```{r weights-descending}
 surveys_exp |> 
   ggplot(aes(x = year, 
              y = mean_weight, 
@@ -95,7 +97,7 @@ surveys_exp |>
 
 **4. Now that you've reordered the lines, look at your legend's label. That's terrible! Let's give the legend a new title *and* move the information from the y-axis to the plot title.**
 
-```{r}
+```{r relabelled-legend-visual}
 surveys_exp |> 
   ggplot(aes(x = year, 
              y = mean_weight, 
@@ -111,7 +113,7 @@ surveys_exp |>
 
 **1. Create a visualization of the number of rodents captured each day of the week.**
 
-```{r}
+```{r captures-weekdays-visual}
 surveys_daily <- surveys |> 
   group_by(day_of_week) |> 
   drop_na(day_of_week) |> 
@@ -129,7 +131,7 @@ surveys |>
 
 **2. Change the order of the day of the week to go Monday through Sunday.**
 
-```{r}
+```{r weekdays-releveled}
 surveys |> 
   drop_na(day_of_week) |>
   ggplot(mapping = aes(x = fct_relevel(day_of_week, 
@@ -148,7 +150,7 @@ surveys |>
 
 **3. Collapse Monday through Friday into a `"Weekday"` level, and collapse Saturday and Sunday into a `"Weekend"` level. Plot the number of rodents captured between the two groups.**
 
-```{r}
+```{r collapsed-weekdays}
 surveys <- surveys |> 
   drop_na(day_of_week) |>
   mutate(time_of_week = fct_collapse(day_of_week,

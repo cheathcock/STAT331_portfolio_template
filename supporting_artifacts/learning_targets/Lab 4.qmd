@@ -12,7 +12,9 @@ format:
 editor: visual
 ---
 
-```{r}
+**Portfolio Revisions: I have adjusted my YAML to create a more clear document, as well as created names for all code chunks**
+
+```{r packages}
 #| echo: False 
 #| output: False
 library(tidyverse)
@@ -27,14 +29,14 @@ The data set contains information about avocados prices. The idea behind the dat
 
 #### 2) Dataset Cleaning
 
-```{r}
+```{r variables-renamed}
 avocado_data <- avocado_data |> 
   rename("xl_avocados" = `4770`, 
          "large_avocados" = `4225`, 
          "small_avocados" = `4046`)
 ```
 
-```{r}
+```{r data-joined}
 avocado_totalregions <- avocado_data |> 
   distinct(region)
 
@@ -60,7 +62,7 @@ avocado_metro_regions <- avocado_data |>
 
 #### 3) Which major region sold the most organic, small Hass avocados in 2017?
 
-```{r}
+```{r small-2017-avos}
 avocado_regions |> 
   filter(year == 2017, 
          type == "organic") |>
@@ -73,7 +75,7 @@ The region that sold the most organic, small Hass avocados in 2017 was the West 
 
 #### 4) Use the separate() function to split the Date variable into year, month, and day. In which month is the highest volume of avocado sales?
 
-```{r}
+```{r highest-volume}
 avocado_data |> 
   separate(col = Date, sep = "-", into = c("Year", "Month", "Day")) |> 
   group_by(Month) |> 
@@ -87,7 +89,7 @@ The month with the highest volume of avocado sales is February with 1,018,825 av
 
 **Regions with most avocado sales:**
 
-```{r}
+```{r most-sales}
 topfive <- avocado_metro_regions |>  
   group_by(region) |> 
   summarize(total_volume = mean(`Total Volume`)) |> 
@@ -99,21 +101,26 @@ The metro region that sold the most avocados is Los Angeles, with 1,502,653 tota
 
 **Boxplot:**
 
-```{r}
+**Portfolio Revisions: I have revised the format of the boxplot to make it more clear to the viewer**
+
+```{r boxplot-creations}
 top_five <- avocado_metro_regions |> 
   semi_join(topfive, by = c(region = "region"))
 
 top_five |> 
   ggplot(mapping = aes(x = `Total Volume`,
                      y = region)) + 
-  geom_boxplot()
+  geom_boxplot() + 
+  labs(y = " ", 
+       x = " ", 
+       title = "Total Volume of Avocado Sales from the Top Five Regions")
 ```
 
 ## Reshaping
 
 #### 6) In which regions is the price of organic versus conventional avocados most different? Support your answer with a few summary statistics and a visualization.
 
-```{r}
+```{r organic-vs-conventional}
 california_baby <- data.frame(region = c("LosAngeles", "SanDiego", "Sacramento", "SanFrancisco"))
 
 california_regions <- avocado_metro_regions |> 
@@ -124,22 +131,29 @@ california_regions |>
   summarize(mean_price = mean(AveragePrice), .groups = "keep") |> 
   pivot_wider(names_from = type, values_from = mean_price) |> 
   mutate(diff = conventional - organic)
+```
 
-#visualization 
+**Portfolio Revisions: I have revised the format of this visualization to make it more clear to the viewer**
+
+```{r organic-vs-conventional-visualization}
 california_regions |>
   ggplot(mapping = aes(y = `Total Volume`, 
                      x = region, 
                      color = type)
        ) + 
-  geom_jitter()
-
+  geom_jitter() +
+  labs(y = "", 
+       x = "", 
+       title = "Difference of Total Volume between Organic and Conventional Avocados")
 ```
 
 The region where the price of organic and conventional avocados is the most different is San Francisco, with organic avocados being \$0.81 more than conventional, on average.
 
 #### 7) Recreate the plot
 
-```{r}
+**Portfolio Revisions: I have revised the title of this graph to make it more clear.**
+
+```{r plot-recreation-1}
 #| output: False 
 ca_regions_long <- california_regions |>
   pivot_longer(cols = small_avocados:xl_avocados, 
@@ -149,14 +163,16 @@ ca_regions_long <- california_regions |>
   summarize(mean_sales = mean(Sales_Volume))
 ```
 
-```{r}
+```{r plot-recreation-2}
 ca_regions_long |>
   ggplot(mapping = aes(y = mean_sales, 
                      x = region, 
                      fill = Size)) + 
   geom_col(position = "fill") + 
   facet_wrap(~ type) + 
-  xlab("Region of CA") +
-  ylab("Proportion of Avocados Sold") +
-  scale_x_discrete(guide = guide_axis(n.dodge = 2))
+  scale_x_discrete(guide = guide_axis(n.dodge = 2)) + 
+  labs(x = "", 
+       y = "", 
+       title = "Proportion of Avocados Sold", 
+       subtitle = "In Four Regions of CA")
 ```

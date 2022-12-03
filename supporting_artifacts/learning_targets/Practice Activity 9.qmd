@@ -16,7 +16,7 @@ editor: visual
 
 ## **1) Data**
 
-```{r}
+```{r packages}
 #| echo: False 
 #| output: False
 library(tidyverse)

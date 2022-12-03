@@ -14,8 +14,6 @@
 
 ### Demonstration of Learning Targets
 
-#### Lab 2
-
 #### Lab 3 
 
 #### Lab 4
@@ -45,7 +43,3 @@
 ##### Challenge 3
 
 ##### Challenge 9
-
-### Growth as a Team Member
-
-##### Peer Reviews 

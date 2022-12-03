@@ -14,7 +14,7 @@ editor: visual
 
 ## **Creating Nice Tables**
 
-```{r}
+```{r packages}
 #| echo: False 
 #| output: False
 library(tidyverse)

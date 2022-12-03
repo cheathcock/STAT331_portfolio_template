@@ -12,11 +12,13 @@ format:
 editor: visual
 ---
 
+**Portfolio Revisions: I have adjusted my YAML to create a more clear document, as well as created names for all code chunks**
+
 ## **Baby Names**
 
 ## **2) Is my name not cool any more?**
 
-```{r}
+```{r packages}
 #| echo: False 
 #| output: False
 library(tidyverse)
@@ -27,7 +29,7 @@ a_names <- read.csv(here::here("supporting_artifacts", "datasets", "StateNames_A
 
 The dataset has a column titled Gender, which contains two values "F" and "M", representing "Female" and "Male". The sex someone was assigned at birth is different from their gender identity (definitions). Thus, this variable should be renamed to Sex or Sex at Birth.
 
-```{r}
+```{r renaming-variable}
 #| message: False
 a_names <- a_names |> 
   mutate("Sex at Birth" = Gender) |> 
@@ -36,7 +38,7 @@ a_names <- a_names |>
 
 1.  Make a summary table of the number of babies named "Allison" for each state and the sex of the baby. Specifically, each state should be its own row and each sex should have its own column. Additionally, if there were no babies born with the name "Allison" for that combination of year, state, & sex the table should have a value of 0 (not an `NA`).
 
-```{r}
+```{r unrevised-code}
 #original code 
 #sum_table_a <- a_names |> 
   #pivot_wider(names_from = `Sex at Birth`, values_from = Count) |> 
@@ -48,7 +50,7 @@ a_names <- a_names |>
 #sum_table_a
 ```
 
-```{r}
+```{r revised-summary-allison-table}
 #revised code 
 sum_table_a <- a_names |> 
   filter(Name == "Allison") |> 
@@ -62,7 +64,7 @@ sum_table_a
 
 2.  You should have seen in the table above that "Allison" is a name given overwhelmingly to babies assigned female at birth. So, `filter` the data to include only babies assigned `F`emale at birth.
 
-```{r}
+```{r filter-females}
 allisons_female <- a_names |> 
   filter(Name == "Allison", 
          `Sex at Birth` == "F") |> 
@@ -89,7 +91,7 @@ a_names |>
 
 4.  Create a linear model with the year as the explanatory variable, and the number of Allisons as the response.
 
-```{r}
+```{r unrevised-regression}
 #allisons_count <- a_names %>%
   #filter(Name == "Allison") %>%
   #lm(Count ~ Year, data = .) 
@@ -97,7 +99,7 @@ a_names |>
 #summary(allisons_count)
 ```
 
-```{r}
+```{r revised-allison-regression}
 #revised code 
 allisons_count <- a_names %>%
   filter(Name == "Allison",
@@ -111,7 +113,7 @@ summary(allisons_count)
 
 5.  Visualize the regression model.
 
-```{r}
+```{r linear-model-visual}
 allisons_count |> 
   ggplot(mapping = aes(x = Year, y = counts)) + 
   geom_point() + 
@@ -127,7 +129,7 @@ allisons_count |>
 
 7.  Plot the *residuals* of the model, that is, the actual values minus the predicted values. Comment on the residuals - do you see any patterns?
 
-```{r}
+```{r linear-model-residuals}
 allisons_count |> 
   broom::augment() |> 
   ggplot(mapping = aes(y = .resid, x = .fitted)) +
@@ -145,12 +147,12 @@ We can conclude that this model may not be the best representation of the data, 
 
 1.  Narrow the A name dataset (downloaded previously) down to only male-assigned babies named "Allan", "Alan", or "Allen". Make a plot comparing the popularity of these names over time.
 
-```{r}
+```{r allen-data}
 allen_data <- a_names |> 
   filter(Name == "Allan" | Name == "Alan" | Name =="Allen")
 ```
 
-```{r}
+```{r allen-plot}
 allen_data |> 
   ggplot(mapping = aes(x = Name, y = Count, fill = Name)) + 
   geom_col() + 
@@ -162,7 +164,7 @@ allen_data |>
 
 2.  In California, Allan's spelling of his name is the least common of the three, but perhaps it's not such an unusual name for his home state of Pennsylvania. Compute the total number of babies born with each spelling of "Allan" in 2000, in Pennsylvania and in California. Specifically, each spelling should be its own column and each state should have its own row. Similar to before, a `0` (not an `NA`) should be used to represent locations where there were no instances of these names.
 
-```{r}
+```{r allen-ca-vs-pa}
 allen_names <- allen_data |> 
   pivot_wider(names_from = Name, values_from = Count) |> 
   filter(Year == 2000, `Sex at Birth` == "M", State == "CA" | State == "PA") |> 
@@ -173,7 +175,7 @@ allen_names
 
 3.  Convert your total counts to overall percents. That is, what was the percent breakdown between the three spellings in CA? What about in PA?
 
-```{r}
+```{r allen-percentages}
 allen_data |> 
   pivot_wider(names_from = Name, values_from = Count) |> 
   mutate(across(.cols = Allen:Allan, ~replace_na(., 0))) |> 
