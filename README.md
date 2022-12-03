@@ -14,23 +14,23 @@
 
 ### Demonstration of Learning Targets
 
-##### Lab 2
+#### Lab 2
 
-##### Lab 3 
+#### Lab 3 
 
-##### Lab 4
+#### Lab 4
 
-##### Lab 5
+#### Lab 5
 
-##### Lab 7
+#### Lab 7
 
-##### Lab 8 
+#### Lab 8 
 
-##### Lab 9
+#### Lab 9
 
-##### Practice Activity 4
+#### Practice Activity 4
 
-##### Practice Activity 5.1
+#### Practice Activity 5.1
 
 #### Practice Activity 9
 
