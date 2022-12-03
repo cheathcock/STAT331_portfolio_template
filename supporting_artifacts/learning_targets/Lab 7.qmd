@@ -85,7 +85,7 @@ rescale_01 <- function(vec) {
 ### **Task 2 -- Adding Stops**
 
 ```{r}
-rescale_02 <- function(vec) {
+rescale_01 <- function(vec) {
   
   stopifnot(is.numeric(vec),
             length(vec) > 1)
@@ -100,17 +100,17 @@ rescale_02 <- function(vec) {
 
 ```{r}
 x <- c(1:25, NA)
-rescale_02(x)
+rescale_01(x)
 ```
 
 ### **Task 4 - Performing a More Difficult Test**
 
 ```{r}
 #| output: False
-rescale_02(black_foot_fish$length)
+rescale_01(black_foot_fish$length)
 
 black_foot_fish_new <- black_foot_fish |> 
-  mutate(rescaled_length = rescale_02(length))
+  mutate(rescaled_length = rescale_01(length))
 ```
 
 plots
@@ -137,7 +137,7 @@ rescale_column <- function(df, vars) {
     mutate(
       across(
         .cols = {{ vars }}, 
-        .fns = rescale_02
+        .fns = rescale_01
       )
     )
   }

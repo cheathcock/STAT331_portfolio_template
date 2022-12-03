@@ -1,5 +1,30 @@
 ---
 title: "Lightening Round Essays"
-format: html
+author: Camille Heathcock
+format: 
+  html: 
+    self-contained: true
 editor: visual
 ---
+
+#### Finish the sentence with another student's name: "If \[Student\] doesn't earn an A, then nobody should, because..." Explain your choice and your reasoning.
+
+If Fiona Norton doesn't earn an A, then nobody should; she not only completes the preliminary assignments, but goes above and beyond to understand the class content, and is so helpful to others.
+
+#### What was the most difficult part of the class for you? List a general topic, a specific problem, a kind of work we did, etc. and explain why.
+
+The most difficult part of this class for me was data cleaning-- specifically in Lab 4 and Challenge 4 when we were given ambiguous instructions on how the data should be manipulated.
+
+#### What was the easiest part of the class for you? Explain why.
+
+I think the easiest part of the class for me was completing the preview activities; I enjoyed having the coursework laid out for us in such a comprehensive document, and it was gratifying to be able to complete the activities on my own without external help. 
+
+#### What part of the class surprised or interested you the most? Explain why.
+
+I was really interested in the cheat sheets offered for the various packages-- like forcats, stringr, and lubridate-- I admire how they fit so many of the concepts in one centralized location. 
+
+#### Give one piece of advice to a student just beginning a quarter of STAT 331 that will help them be successful in learning.
+
+I would recommend keeping notes for this class in a centralized location; having all my notes in one Google doc really helped me to apply concepts that we learned earlier in the quarter to later assignments.
+
+\
